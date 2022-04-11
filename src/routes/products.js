@@ -1,41 +1,45 @@
 import express from "express";
-import idProductos from "../products/idproducts.js";
+import idProductos from "../services/idproducts.js";
+import adminMiddleware from "../middleware/admin.js";
+import fileSystem from "../services/fileSystem.js";
 
-const router = express.Router();
+const productosRouter = express.Router();
 
 const productoService = new idProductos();
 
-router.get('/', (req,res)=>{
-    if (productoService.productos.length == 0) res.send({ error: "no hay productos cargados" })
-    res.send(productoService.productos);
+
+productosRouter.get('/', (req,res)=>{
+    const products = productoService.getProductos();
+    return res.send(products);
 })
 
-router.get('/:pid',(req,res)=>{
-    let id = parseInt(req.params.id);
-    if(id < 0) return res.send({ error: "producto no encontrado" })
-    res.send(productoService.productos[id])
+productosRouter.get('/:pid',(req,res)=>{
+    const paramProductId = req.params.pid;
+    if(paramProductId){
+        const product = productoService.getId(paramProductId);
+        return res.send(product);
+    }
+});
+
+productosRouter.post('/', (req,res)=>{
+    const product = req.body;
+    console.log(product)
+    const products = productoService.saveProductos(product);
+    return res.send(products);
 })
 
-router.post('/', (req,res)=>{
-    let {id,timestamp,nombre,descripcion,codigo,foto,precio,stock} = req.body;
-    let producto = productoService.saveProductos({id,timestamp,nombre,descripcion,codigo,foto,precio,stock});
-    res.send({message:"Added product", product: producto})
+productosRouter.put('/:pid',adminMiddleware, (req,res)=>{
+    const productId = req.params.id;
+    const newProductData = req.body.product;
+    const productUpdated = productoService.updateProduct(productId, newProductData);
+    return res.send(productUpdated);
 })
 
-router.put('/:pid', (req,res)=>{
-    let {id} = req.params;
-    let {nombre} = req.body;
-    let productosPut = productoService.getProductos.find (p=> p.id == id);
-    productosPut.nombre = nombre;
-    return res.json(productosPut);
+productosRouter.delete('/:pid', adminMiddleware,(req,res, next)=>{
+    const productId = req.params.id;
+    const products = productoService.deleteProduct(productId);
+
+    return res.send(products);
 })
 
-router.delete('/:pid', (req,res, next)=>{
-    let id= req.params.id;
-    Producto.delete (id, (err)=>{
-        if (err) return next (err);
-        res.send({message: 'Deleted'});
-    })
-})
-
-export default router;
+export default productosRouter;
