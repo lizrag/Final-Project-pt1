@@ -1,13 +1,20 @@
-import processFile from './fileSystem.js';
+// import processFile from './fileSystem.js';
+import fs from 'fs';
+import __dirname from '../utils.js'
 
-export default class idProductos{
+export default class ProductService {
+
+    // products;
+
     constructor(){
         this.products = [];
     }
 
-
-    getProductos= () =>{
-        return this.products;
+    getProductos= async () =>{
+        // 1. LEER ARCHIVO PRODUCTS.TXT -> OK
+        // 2. RETORNAR CONTENIDO DEL ARCHIVO PRODUCTS.TXT -> OK
+        const data = await fs.promises.readFile(`${__dirname}/products.txt`, 'utf8');
+        return data;
     }
 
     getId= (id) =>{
@@ -16,9 +23,13 @@ export default class idProductos{
     }
 
      
-    saveProductos = (producto) =>{
-        let productID = {
-            id: this.products.length+1,
+    saveProductos = async (producto) =>{
+
+        // 1. ARMAR ESTRUCTURA DE PRODUCTO -> OK
+        // 2. GUARDAR PRODUCTO DENTRO DE ARCHIVO PRODUCTS.TXT
+
+        let product = {
+            // id: this.products.length+1,
             timestamp: Date.now(),
             nombre: producto.nombre, 
             descripcion: producto.descripcion,
@@ -27,8 +38,8 @@ export default class idProductos{
             precio: producto.precio,
             stock: producto.stock
         }
-        this.products.push(productID);
-        return processFile(productID);
+        
+        await fs.promises.writeFile(`${__dirname}/products.txt`, JSON.stringify(product));
     }
 
     updateProduct = (id,product) =>{

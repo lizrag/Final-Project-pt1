@@ -1,0 +1,1 @@
+{"timestamp":1649808083959,"nombre":"Polera blanca","descripcion":"asdasdadsasd","codigo":"asdasdasdasd","foto":"asdsadasd","precio":"2103123","stock":"3"}

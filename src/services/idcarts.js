@@ -1,5 +1,3 @@
-import idProductos from "./idproducts.js";  
-
 export default class Cartservice {
     constructor() {
         this.carts = []
