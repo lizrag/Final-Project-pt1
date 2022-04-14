@@ -1,1 +1,1 @@
-{"timestamp":1649808083959,"nombre":"Polera blanca","descripcion":"asdasdadsasd","codigo":"asdasdasdasd","foto":"asdsadasd","precio":"2103123","stock":"3"}
+{"id":"2","timestamp":1649819856216,"nombre":"short","descripcion":"jean, tallas","codigo":"456","foto":"URL","precio":"15","stock":1}

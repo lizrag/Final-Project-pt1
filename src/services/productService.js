@@ -1,4 +1,3 @@
-// import processFile from './fileSystem.js';
 import fs from 'fs';
 import __dirname from '../utils.js'
 
@@ -11,8 +10,6 @@ export default class ProductService {
     }
 
     getProductos= async () =>{
-        // 1. LEER ARCHIVO PRODUCTS.TXT -> OK
-        // 2. RETORNAR CONTENIDO DEL ARCHIVO PRODUCTS.TXT -> OK
         const data = await fs.promises.readFile(`${__dirname}/products.txt`, 'utf8');
         return data;
     }
@@ -25,11 +22,8 @@ export default class ProductService {
      
     saveProductos = async (producto) =>{
 
-        // 1. ARMAR ESTRUCTURA DE PRODUCTO -> OK
-        // 2. GUARDAR PRODUCTO DENTRO DE ARCHIVO PRODUCTS.TXT
-
         let product = {
-            // id: this.products.length+1,
+            id: producto.id,
             timestamp: Date.now(),
             nombre: producto.nombre, 
             descripcion: producto.descripcion,
